@@ -19,8 +19,8 @@ if ($this->_currentPage == 1 && !empty($this->options->ShowWhisper) && in_array(
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">
 <h2 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
 <ul class="post-meta">
-<li><?php $this->date(); ?></li>
-<li><?php $this->category(',', false); ?></li>
+<li><?php $this->date('Y年m月d日'); ?></li>
+<li><?php $this->author(); ?></li>
 <li><?php $this->commentsNum('暂无评论', '%d 条评论'); ?></li>
 <li><?php Postviews($this); ?></li>
 </ul>
@@ -37,9 +37,9 @@ if ($this->_currentPage == 1 && !empty($this->options->ShowWhisper) && in_array(
 <?php if (postThumb($this)): ?>
 <p class="thumb"><?php echo postThumb($this); ?></p>
 <?php endif; ?>
-<p><?php $this->excerpt(200, ''); ?></p>
+<!-- <p><?php $this->content('<b>- 阅读剩余部分 -</b>'); ?></p> --><p><?php $this->excerpt(200, ''); ?></p>
 <?php endif; if (!$this->options->OneCOL): ?>
-<p class="more"><a href="<?php $this->permalink() ?>" title="<?php $this->title() ?>">- 阅读全文 -</a></p>
+<p class="more"><a href="<?php $this->permalink() ?>" title="<?php $this->title() ?>"><b>- 阅读剩余部分 -</b></a></p>
 <?php endif; ?>
 </div>
 </article>

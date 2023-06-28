@@ -5,6 +5,15 @@
 <?php Whisper(1); ?>
 </section>
 <?php endif; ?>
+<?php if (!empty($this->options->sidebarBlock) && in_array('ShowCategory', $this->options->sidebarBlock)): ?>
+<section class="widget">
+<h3 class="widget-title">分类</h3>
+<ul class="widget-tile">
+<?php $this->widget('Widget_Metas_Category_List')
+->parse('<li><a href="{permalink}">{name}({count})</a></li>'); ?>
+</ul>
+</section>
+<?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowHotPosts', $this->options->sidebarBlock)): ?>
 <section class="widget">
 <h3 class="widget-title">热门文章</h3>
@@ -36,23 +45,14 @@
 </ul>
 </section>
 <?php endif; ?>
-<?php if (!empty($this->options->sidebarBlock) && in_array('ShowCategory', $this->options->sidebarBlock)): ?>
-<section class="widget">
-<h3 class="widget-title">分类</h3>
-<ul class="widget-tile">
-<?php $this->widget('Widget_Metas_Category_List')
-->parse('<li><a href="{permalink}">{name}</a></li>'); ?>
-</ul>
-</section>
-<?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowTag', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title">标签</h3>
+<h3 class="widget-title">标 签</h3>
 <ul class="widget-tile">
-<?php $this->widget('Widget_Metas_Tag_Cloud', 'ignoreZeroCount=1&limit=30')->to($tags); ?>
+<?php $this->widget('Widget_Metas_Tag_Cloud', 'ignoreZeroCount=1&limit=20')->to($tags); ?>
 <?php if($tags->have()): ?>
 <?php while($tags->next()): ?>
-<li><a href="<?php $tags->permalink(); ?>"><?php $tags->name(); ?></a></li>
+<li><a style="background-color:rgb(<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>);color: #FFF;border-radius: 0.2rem;padding: 0 .3em;" href="<?php $tags->permalink();?>" title="<?php $tags->count(); ?> 篇文章"># <?php $tags->name(); ?></a></li>
 <?php endwhile; ?>
 <?php else: ?>
 <li>暂无标签</li>
@@ -64,11 +64,15 @@
 <section class="widget">
 <h3 class="widget-title">归档</h3>
 <ul class="widget-list">
-<?php $this->widget('Widget_Contents_Post_Date', 'type=month&format=Y 年 n 月')
+<?php $this->widget('Widget_Contents_Post_Date', 'type=year&format=Y年')
 ->parse('<li><a href="{permalink}">{date}</a></li>'); ?>
 </ul>
 </section>
 <?php endif; ?>
+<h3 class="widget-title">友情链接</h3>
+<ul class="widget-tile">
+<?php Links_Plugin::output(); ?>
+</ul>
 <?php if (!empty($this->options->ShowLinks) && in_array('sidebar', $this->options->ShowLinks)): ?>
 <section class="widget">
 <h3 class="widget-title">链接</h3>
