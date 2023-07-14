@@ -22,7 +22,8 @@ echo $commentClass;
 <div id="<?php $comments->theId(); ?>">
 <div class="comment-author">
 <?php $comments->gravatar('32'); ?>
-<b><?php CommentAuthor($comments); ?></b>
+&emsp;<b><?php CommentAuthor($comments); ?></b>
+<?php UserAgent_Plugin::get_useragent($comments->agent,$comments->ip); ?>
 <?php if ($comments->authorId == $comments->ownerId) { ?>
 <span class="author-icon">Author</span>
 <?php } ?>
@@ -65,7 +66,7 @@ echo $commentClass;
 <p>登录身份: <a href="<?php $this->options->profileUrl(); ?>" target="_blank"><?php $this->user->screenName(); ?></a>. <a href="<?php $this->options->logoutUrl(); ?>" title="Logout"<?php if ($this->options->PjaxOption): ?> no-pjax<?php endif; ?>>退出 &raquo;</a></p>
 <?php endif; ?>
 <p <?php if(!$this->user->hasLogin()): ?>class="textarea"<?php endif; ?>>
-<textarea name="text" id="textarea" placeholder="加入讨论..." required ><?php $this->remember('text'); ?></textarea>
+<textarea name="text" id="textarea" placeholder="支持 Markdown 语法..." required ><?php $this->remember('text'); ?></textarea>
 </p>
 <p <?php if(!$this->user->hasLogin()): ?>class="textbutton"<?php endif; ?>>
 <?php if(!$this->user->hasLogin()): ?>

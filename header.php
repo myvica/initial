@@ -17,6 +17,7 @@
 ), '', ' - '); ?><?php $this->options->title(); if ($this->is('index') && $this->options->subTitle): ?> - <?php $this->options->subTitle(); endif; ?></title>
 <?php $this->header('generator=&template=&pingback=&xmlrpc=&wlw=&commentReply=&rss1=&rss2=&antiSpam=&atom='); ?>
 <link rel="stylesheet" href="<?php cjUrl('style.min.css') ?>" />
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 <?php if ($this->options->CustomCSS): ?>
 <style type="text/css"><?php $this->options->CustomCSS(); ?></style>
 <?php endif; ?>
@@ -43,9 +44,9 @@
 </form>
 </div>
 <ul class="nav-menu">
-<li><a href="<?php $this->options->siteUrl(); ?>">首页</a></li>
+<li><a href="<?php $this->options->siteUrl(); ?>"><i class="fa fa-home"></i>&ensp;首页</a></li>
 <?php if (!empty($this->options->Navset) && in_array('ShowCategory', $this->options->Navset)): if (in_array('AggCategory', $this->options->Navset)): ?>
-<li class="menu-parent"><a><?php echo $this->options->CategoryText ? $this->options->CategoryText : '分类' ?></a>
+<li class="menu-parent"><a><?php echo $this->options->CategoryText ? $this->options->CategoryText : '<i class="fa fa-th-list"></i>&ensp;分类' ?></a>
 <ul>
 <?php
 endif;

@@ -2,7 +2,7 @@
 $this->need('header.php');
 if (!empty($this->options->Breadcrumbs) && in_array('Postshow', $this->options->Breadcrumbs)): ?>
 <div class="breadcrumbs">
-<a href="<?php $this->options->siteUrl(); ?>">首页</a> &raquo; <?php $this->category(' | '); ?> &raquo; <?php echo !empty($this->options->Breadcrumbs) && in_array('Text', $this->options->Breadcrumbs) ? '正文' : $this->title; ?>
+<a href="<?php $this->options->siteUrl(); ?>"><i class="fa fa-home"></i>&ensp;首页</a> &raquo; <?php $this->category(' | '); ?> &raquo; <?php echo !empty($this->options->Breadcrumbs) && in_array('Text', $this->options->Breadcrumbs) ? '正文' : $this->title; ?>
 </div>
 <?php endif; ?>
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">

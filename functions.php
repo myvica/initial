@@ -5,17 +5,17 @@ define('INITIAL_VERSION_NUMBER', '2.5.5');
 if (Helper::options()->GravatarUrl) define('__TYPECHO_GRAVATAR_PREFIX__', Helper::options()->GravatarUrl);
 
 function themeConfig($form) {
-	$logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL, _t('站点标题 LOGO 地址'), _t('在这里填入一个图片 URL 地址, 以显示网站标题 LOGO'));
+	$logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, '/logo.png', _t('站点标题 LOGO 地址'), _t('在这里填入一个图片 URL 地址, 以显示网站标题 LOGO'));
 	$form->addInput($logoUrl);
 
-	$customTitle = new Typecho_Widget_Helper_Form_Element_Text('customTitle', NULL, NULL, _t('自定义站点标题'), _t('仅用于替换页面头部位置的“标题”显示，和Typecho后台设置的站点名称不冲突，留空则显示默认站点名称'));
+	$customTitle = new Typecho_Widget_Helper_Form_Element_Text('customTitle', NULL, '网优·运维', _t('自定义站点标题'), _t('仅用于替换页面头部位置的“标题”显示，和Typecho后台设置的站点名称不冲突，留空则显示默认站点名称'));
 	$form->addInput($customTitle);
 
 	$titleForm = new Typecho_Widget_Helper_Form_Element_Radio('titleForm', 
 	array('title' => _t('仅文字'),
 	'logo' => _t('仅LOGO'),
 	'all' => _t('LOGO+文字')),
-	'title', _t('站点标题显示内容'), _t('默认仅显示文字标题，若要显示LOGO，请在上方添加 LOGO 地址'));
+	'all', _t('站点标题显示内容'), _t('默认仅显示文字标题，若要显示LOGO，请在上方添加 LOGO 地址'));
 	$form->addInput($titleForm);
 
 	$subTitle = new Typecho_Widget_Helper_Form_Element_Text('subTitle', NULL, NULL, _t('自定义站点副标题'), _t('浏览器副标题，仅在当前页面为首页时显示，显示格式为：<b>标题 - 副标题</b>，留空则不显示副标题'));
@@ -66,7 +66,7 @@ function themeConfig($form) {
 	$HeadFixed = new Typecho_Widget_Helper_Form_Element_Radio('HeadFixed', 
 	array(1 => _t('启用'),
 	0 => _t('关闭')),
-	0, _t('浮动显示头部'), _t('默认关闭'));
+	1, _t('浮动显示头部'), _t('默认关闭'));
 	$form->addInput($HeadFixed);
 
 	$SidebarFixed = new Typecho_Widget_Helper_Form_Element_Radio('SidebarFixed', 
@@ -79,7 +79,7 @@ function themeConfig($form) {
 	array('jd' => _t('jsDelivr'),
 	'sc' => _t('Staticfile'),
 	'cf' => _t('CDNJS')),
-	'jd', _t('公共静态资源来源'), _t('默认jsDelivr，若JS文件异常，可尝试切换来源'));
+	'sc', _t('公共静态资源来源'), _t('默认jsDelivr，若JS文件异常，可尝试切换来源'));
 	$form->addInput($cjCDN);
 
 	$GravatarUrl = new Typecho_Widget_Helper_Form_Element_Radio('GravatarUrl', 
@@ -120,13 +120,13 @@ function themeConfig($form) {
 	array('post' => _t('使用文章内设定'),
 	'open' => _t('全部启用'),
 	0 => _t('全部关闭')),
-	'post', _t('文章目录'), _t('一键开关全部文章目录，默认使用文章内的设定，（若文章内无任何标题，则不显示目录）'));
+	'open', _t('文章目录'), _t('一键开关全部文章目录，默认使用文章内的设定，（若文章内无任何标题，则不显示目录）'));
 	$form->addInput($catalog);
 
 	$scrollTop = new Typecho_Widget_Helper_Form_Element_Radio('scrollTop', 
 	array(1 => _t('启用'),
 	0 => _t('关闭')),
-	0, _t('返回顶部'), _t('默认关闭，启用将在右下角显示“返回顶部”按钮'));
+	1, _t('返回顶部'), _t('默认关闭，启用将在右下角显示“返回顶部”按钮'));
 	$form->addInput($scrollTop);
 
 	$MusicSet = new Typecho_Widget_Helper_Form_Element_Radio('MusicSet', 
@@ -169,7 +169,7 @@ function themeConfig($form) {
 	'ShowTag' => _t('显示标签'),
 	'ShowArchive' => _t('显示归档'),
 	'ShowOther' => _t('显示其它杂项')),
-	array('ShowRecentPosts', 'ShowRecentComments', 'ShowCategory', 'ShowTag', 'ShowArchive', 'ShowOther'), _t('侧边栏显示'));
+	array('ShowRecentPosts', 'ShowRecentComments','ShowCategory', 'ShowTag', 'ShowOther'), _t('侧边栏显示'));
 	$form->addInput($sidebarBlock->multiMode());
 
 	$OneCOL = new Typecho_Widget_Helper_Form_Element_Radio('OneCOL', 
@@ -181,7 +181,19 @@ function themeConfig($form) {
 	$ICPbeian = new Typecho_Widget_Helper_Form_Element_Text('ICPbeian', NULL, NULL, _t('ICP备案号'), _t('在这里输入ICP备案号,留空则不显示'));
 	$form->addInput($ICPbeian);
 
-	$CustomContent = new Typecho_Widget_Helper_Form_Element_Textarea('CustomContent', NULL, NULL, _t('底部自定义内容'), _t('位于底部，footer之后body之前，适合放置一些JS内容，如网站统计代码等（若开启全站Pjax，目前支持Google和百度统计的回调，其余统计代码可能会不准确）'));
+	$CustomContent = new Typecho_Widget_Helper_Form_Element_Textarea('CustomContent', NULL, '<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://logs.sec.ht/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "2"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>', _t('底部自定义内容'), _t('位于底部，footer之后body之前，适合放置一些JS内容，如网站统计代码等（若开启全站Pjax，目前支持Google和百度统计的回调，其余统计代码可能会不准确）'));
 	$form->addInput($CustomContent);
 }
 
@@ -229,9 +241,10 @@ function UrlReplace($obj) {
 function postThumb($obj) {
 	$thumb = $obj->fields->thumb;
 	if (!$thumb) {
-		return false;
+		$thumb = 1; 
 	}
 	if (is_numeric($thumb)) {
+	    $thumb = max(1, $thumb);
 		preg_match_all('/<img.*?src="(.*?)".*?[\/]?>/i', $obj->content, $matches);
 		if (isset($matches[1][$thumb-1])) {
 			$thumb = $matches[1][$thumb-1];
@@ -553,6 +566,6 @@ function themeFields($layout) {
 	$catalog = new Typecho_Widget_Helper_Form_Element_Radio('catalog', 
 	array(1 => _t('启用'),
 	0 => _t('关闭')),
-	0, _t('文章目录'), _t('默认关闭，启用则会在文章内显示“文章目录”（若文章内无任何标题，则不显示目录），需要在“控制台-设置外观-文章目录”启用“使用文章内设定”后，方可生效'));
+	1, _t('文章目录'), _t('默认关闭，启用则会在文章内显示“文章目录”（若文章内无任何标题，则不显示目录），需要在“控制台-设置外观-文章目录”启用“使用文章内设定”后，方可生效'));
 	$layout->addItem($catalog);
 }

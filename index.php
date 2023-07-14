@@ -19,9 +19,8 @@ if ($this->_currentPage == 1 && !empty($this->options->ShowWhisper) && in_array(
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">
 <h2 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
 <ul class="post-meta">
-<li><?php $this->date('Y年m月d日'); ?></li>
-<li><?php $this->author(); ?></li>
-<li><?php $this->commentsNum('暂无评论', '%d 条评论'); ?></li>
+<li><?php $this->date('Y-m-d'); ?></li>
+<li><?php $this->category(' | '); ?></li>
 <li><?php Postviews($this); ?></li>
 </ul>
 <div class="post-content">
