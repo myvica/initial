@@ -19,8 +19,9 @@ if ($this->_currentPage == 1 && !empty($this->options->ShowWhisper) && in_array(
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">
 <h2 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h2>
 <ul class="post-meta">
-<li><?php $this->date('Y-m-d'); ?></li>
-<li><?php $this->category(' | '); ?></li>
+<li class="fa fa-calendar">&ensp;<?php $this->date('Y-m-d'); ?></li>
+<li class="fa fa-list">&ensp;<?php $this->category(' | '); ?></li>
+<li class="fa fa-user">&ensp;<a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></li>
 <li><?php Postviews($this); ?></li>
 </ul>
 <div class="post-content">
@@ -36,9 +37,9 @@ if ($this->_currentPage == 1 && !empty($this->options->ShowWhisper) && in_array(
 <?php if (postThumb($this)): ?>
 <p class="thumb"><?php echo postThumb($this); ?></p>
 <?php endif; ?>
-<!-- <p><?php $this->content('<b>- 阅读剩余部分 -</b>'); ?></p> --><p><?php $this->excerpt(200, ''); ?></p>
+<!-- <p><?php $this->content('- 阅读剩余部分 -'); ?></p> --><p><?php $this->excerpt(200, ''); ?></p>
 <?php endif; if (!$this->options->OneCOL): ?>
-<p class="more"><a href="<?php $this->permalink() ?>" title="<?php $this->title() ?>"><b>- 阅读剩余部分 -</b></a></p>
+<p class="more"><a href="<?php $this->permalink() ?>" title="<?php $this->title() ?>">- 阅读剩余部分 -</a></p>
 <?php endif; ?>
 </div>
 </article>

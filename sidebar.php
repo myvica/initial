@@ -52,7 +52,7 @@
 <?php $this->widget('Widget_Metas_Tag_Cloud', 'ignoreZeroCount=1&limit=20')->to($tags); ?>
 <?php if($tags->have()): ?>
 <?php while($tags->next()): ?>
-<li><a style="background-color:rgb(<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>);color: #FFF;border-radius: 0.2rem;padding: 0 .3em;" href="<?php $tags->permalink();?>" title="<?php $tags->count(); ?> 篇文章"># <?php $tags->name(); ?></a></li>
+<li><a style="background-color:rgb(<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>);color: #FFF;border-radius: 0.2rem;padding: 0 .3em;" href="<?php $tags->permalink();?>" title="<?php $tags->count(); ?> 篇文章"><?php $tags->name(); ?></a></li>
 <?php endwhile; ?>
 <?php else: ?>
 <li>暂无标签</li>
@@ -69,7 +69,7 @@
 </ul>
 </section>
 <?php endif; ?>
-<h3 class="widget-title"><i class="fa fa-link"></i>&ensp;友情链接</h3>
+<h3 class="widget-title"><i class="fa fa-bookmark"></i>&ensp;友情链接</h3>
 <ul class="widget-tile">
 <?php Links_Plugin::output(); ?>
 </ul>

@@ -8,8 +8,9 @@ if (!empty($this->options->Breadcrumbs) && in_array('Postshow', $this->options->
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">
 <h1 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h1>
 <ul class="post-meta">
-<li><?php $this->date('Y年n月d日'); ?></li> <a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a>
-发布在 <li><?php $this->category(' | '); ?></li>
+<li><?php $this->date('Y年n月d日'); ?></li>
+<li class="fa fa-list">&ensp;<?php $this->category(' | '); ?></li>
+&ensp;<li><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></li>
 <li><a href="<?php $this->permalink() ?>#comments"><?php $this->commentsNum('暂无评论', '%d 条评论'); ?></a></li>
 <li><?php Postviews($this); ?></li>
 </ul>
