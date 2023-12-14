@@ -569,3 +569,52 @@ function themeFields($layout) {
 	1, _t('文章目录'), _t('默认关闭，启用则会在文章内显示“文章目录”（若文章内无任何标题，则不显示目录），需要在“控制台-设置外观-文章目录”启用“使用文章内设定”后，方可生效'));
 	$layout->addItem($catalog);
 }
+// 加载时间
+function timer_start()
+{
+	global $timestart;
+	$mtime = explode(' ', microtime());
+	$timestart = $mtime[1] + $mtime[0];
+	return true;
+}
+timer_start();
+function timer_stop($display = 0, $precision = 3)
+{
+	global $timestart, $timeend;
+	$mtime = explode(' ', microtime());
+	$timeend = $mtime[1] + $mtime[0];
+	$timetotal = number_format($timeend - $timestart, $precision);
+	$r = $timetotal < 1 ? $timetotal * 1000 . " ms" : $timetotal . " s";
+	if ($display) {
+		echo $r;
+	}
+	return $r;
+}
+// 随机文章
+function getRandomPosts($limit = 10)
+{
+	$db = Typecho_Db::get();
+	$result = $db->fetchAll(
+		$db->select()->from('table.contents')
+			->where('status = ?', 'publish')
+			->where('type = ?', 'post')
+			->where('created <= unix_timestamp(now())', 'post')
+			->limit($limit)
+			->order('RAND()')
+	);
+	if ($result) {
+		$i = 1;
+		foreach ($result as $val) {
+			if ($i <= 3) {
+				$var = ' class="red"';
+			} else {
+				$var = '';
+			}
+			$val = Typecho_Widget::widget('Widget_Abstract_Contents')->push($val);
+			$post_title = htmlspecialchars($val['title']);
+			$permalink = $val['permalink'];
+			echo '<li><a href="' . $permalink . '" title="' . $post_title . '" target="_blank">' . $post_title . '</a></li>';
+			$i++;
+		}
+	}
+}

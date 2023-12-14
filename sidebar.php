@@ -14,6 +14,11 @@
 </ul>
 </section>
 <?php endif; ?>
+<section class="widget">
+<h3 class="widget-title"><i class="fa fa-random"></i>&ensp;随机文章</h3>
+<ul class="widget-list"><?php getRandomPosts('6');?>
+</ul>
+</section>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowHotPosts', $this->options->sidebarBlock)): ?>
 <section class="widget">
 <h3 class="widget-title">热门文章</h3>
