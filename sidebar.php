@@ -21,7 +21,7 @@
 </section>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowHotPosts', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title">热门文章</h3>
+<h3 class="widget-title"><i class="fa fa-thermometer"></i>&ensp;热门文章</h3>
 <ul class="widget-list">
 <?php Contents_Post_Initial($this->options->postsListSize, 'commentsNum'); ?>
 </ul>
@@ -29,7 +29,7 @@
 <?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowRecentPosts', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title">最新文章</h3>
+<h3 class="widget-title"><i class="fa fa-history"></i>&ensp;最新文章</h3>
 <ul class="widget-list">
 <?php Contents_Post_Initial($this->options->postsListSize); ?>
 </ul>
@@ -37,7 +37,7 @@
 <?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowRecentComments', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title">最近回复</h3>
+<h3 class="widget-title"><i class="fa fa-comments-o"></i>&ensp;最近回复</h3>
 <ul class="widget-list">
 <?php $this->widget('Initial_Widget_Comments_Recent', in_array('IgnoreAuthor', $this->options->sidebarBlock) ? 'ignoreAuthor=1' : '')->to($comments); ?>
 <?php if($comments->have()): ?>
@@ -52,7 +52,7 @@
 <?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowTag', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title"><i class="fa fa-hashtag"></i>&ensp;标 签</h3>
+<h3 class="widget-title"><i class="fa fa-tags"></i>&ensp;标 签</h3>
 <ul class="widget-tile">
 <?php $this->widget('Widget_Metas_Tag_Cloud', 'ignoreZeroCount=1&limit=20')->to($tags); ?>
 <?php if($tags->have()): ?>
@@ -91,7 +91,7 @@
 <?php endif; ?>
 <?php if (!empty($this->options->sidebarBlock) && in_array('ShowOther', $this->options->sidebarBlock)): ?>
 <section class="widget">
-<h3 class="widget-title">其它</h3>
+<h3 class="widget-title"><i class="fa fa-cogs"></i>&ensp;其它</h3>
 <ul class="widget-list">
 <li><a href="<?php $this->options->feedUrl(); ?>" target="_blank">文章 RSS&ensp;<i class="fa fa-rss-square" style="color:rgb(255, 132, 5)"></i></a></li>
 <li><a href="<?php $this->options->commentsFeedUrl(); ?>" target="_blank">评论 RSS&ensp;<i class="fa fa-rss-square" style="color:rgb(255, 132, 5)"></i></a></li>

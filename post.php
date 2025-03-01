@@ -8,9 +8,9 @@ if (!empty($this->options->Breadcrumbs) && in_array('Postshow', $this->options->
 <article class="post<?php if ($this->options->PjaxOption && $this->hidden): ?> protected<?php endif; ?>">
 <h1 class="post-title"><a href="<?php $this->permalink() ?>"><?php $this->title() ?></a></h1>
 <ul class="post-meta">
-<li><?php $this->date('Y年n月d日'); ?></li>
-<li class="fa fa-list">&ensp;<?php $this->category(' | '); ?></li>
-&ensp;<li><a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></li>
+<li class="fa fa-calendar">&ensp;<?php $this->date('Y年n月d日'); ?></li>
+<li class="fa fa-th">&ensp;<?php $this->category(' | '); ?></li>
+<li class="fa fa-user">&ensp;<a href="<?php $this->author->permalink(); ?>"><?php $this->author(); ?></a></li>
 <li><a href="<?php $this->permalink() ?>#comments"><?php $this->commentsNum('暂无评论', '%d 条评论'); ?></a></li>
 <li><?php Postviews($this); ?></li>
 </ul>
@@ -23,7 +23,7 @@ if (!empty($this->options->Breadcrumbs) && in_array('Postshow', $this->options->
 <a><img src="<?php $this->options->Alipay(); ?>" alt="支付宝收款二维码" />支付宝</a><?php endif; ?>
 </p>
 <?php endif; ?>
-<p class="tags">标签: <?php $this->tags(', ', true, 'none'); ?></p>
+<p class="tags"><i class="fa fa-tags"></i>&ensp;标签: <?php $this->tags(', ', true, 'none'); ?></p>
 <?php if ($this->options->LicenseInfo !== '0'): ?>
 <p class="license"><?php echo $this->options->LicenseInfo ? $this->options->LicenseInfo : '本作品采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license nofollow">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可。' ?></p>
 <?php endif; ?>

@@ -33,6 +33,12 @@ function themeConfig($form) {
 	$AttUrlReplace = new Typecho_Widget_Helper_Form_Element_Textarea('AttUrlReplace', NULL, NULL, _t('文章内的链接地址替换（建议用在图片等静态资源的链接上）'), _t('按照格式输入你的CDN链接以替换原链接，格式：<br><b class="notice">原地址=替换地址</b><br>原地址与新地址之间用等号“=”分隔，例如：<br><b>http://www.example.com/usr/uploads/=http://cdn.example.com/usr/uploads/</b><br>可设置多个规则，换行即可，一行一个'));
 	$form->addInput($AttUrlReplace);
 
+	$duanma = new Typecho_Widget_Helper_Form_Element_Radio('duanma', 
+	array(1 => _t('启用'),
+	0 => _t('关闭')),
+	1, _t('短代码功能'), _t('默认开启，启用则支持<b class="notice">[toggle][highlight][tips][noway][warning][buy][note][ref][focus][likeme]</b>等……<br />详见 https://blog.alttt.com/398.html '));
+	$form->addInput($duanma);
+
 	$Navset = new Typecho_Widget_Helper_Form_Element_Checkbox('Navset', 
 	array('ShowCategory' => _t('显示分类'),
 	'AggCategory' => _t('↪合并分类'),
@@ -154,10 +160,10 @@ function themeConfig($form) {
 	$InsideLinksSort = new Typecho_Widget_Helper_Form_Element_Text('InsideLinksSort', NULL, NULL, _t('内页（链接模板）显示的链接分类（支持多分类，请用英文逗号“,”分隔）'), _t('若只需显示某分类下的链接，请输入链接分类名（建议使用字母形式的分类名），留空则默认显示全部链接'));
 	$form->addInput($InsideLinksSort);
 
-	$ShowLinks = new Typecho_Widget_Helper_Form_Element_Checkbox('ShowLinks', array('footer' => _t('页脚'), 'sidebar' => _t('侧边栏')), NULL, _t('首页显示链接'));
+	$ShowLinks = new Typecho_Widget_Helper_Form_Element_Checkbox('ShowLinks', array('footer' => _t('页脚'), 'sidebar' => _t('侧边栏'),'header' => _t('header')), array('sidebar'), _t('首页显示链接'));
 	$form->addInput($ShowLinks->multiMode());
 
-	$ShowWhisper = new Typecho_Widget_Helper_Form_Element_Checkbox('ShowWhisper', array('index' => _t('首页'), 'sidebar' => _t('侧边栏')), NULL, _t('显示最新的“轻语”'));
+	$ShowWhisper = new Typecho_Widget_Helper_Form_Element_Checkbox('ShowWhisper', array('index' => _t('首页'), 'sidebar' => _t('侧边栏'),'header' => _t('header')), array('sidebar'), _t('显示最新的“轻语”'));
 	$form->addInput($ShowWhisper->multiMode());
 
 	$sidebarBlock = new Typecho_Widget_Helper_Form_Element_Checkbox('sidebarBlock', 
@@ -212,6 +218,9 @@ function themeInit($archive) {
 		if ($archive->is('post') && (($options->catalog == 'post' && $archive->fields->catalog) || $options->catalog == 'open')) {
 			$archive->content = createCatalog($archive->content);
 		}
+	}
+	if ($options->duanma) {
+		require_once __DIR__ . '/shortcode.php';
 	}
 }
 
@@ -556,6 +565,16 @@ function compressHtml($html_source) {
 		$compress .= $c;
 	}
 	return $compress;
+}
+//重新处理文章
+function parseContent($obj) {
+	$options = Helper::options();
+	//加载短代码
+	if ($options->duanma) {
+		$obj->content = do_shortcode($obj->content);
+	}
+	//输出内容
+	echo trim($obj->content);
 }
 
 function themeFields($layout) {
