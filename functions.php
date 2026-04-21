@@ -1,6 +1,6 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-error_reporting(0);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 define('INITIAL_VERSION_NUMBER', '2.5.5');
 if (Helper::options()->GravatarUrl) define('__TYPECHO_GRAVATAR_PREFIX__', Helper::options()->GravatarUrl);
 
@@ -229,7 +229,10 @@ function hrefOpen($obj) {
 function UrlReplace($obj) {
 	$list = explode(PHP_EOL, Helper::options()->AttUrlReplace);
 	foreach ($list as $tmp) {
-		list($old, $new) = explode('=', $tmp);
+		if (strpos($tmp, '=') === false) {
+			continue;
+		}
+		list($old, $new) = explode('=', $tmp, 2);
 		$obj = str_replace($old, $new, $obj);
 	}
 	return $obj;
@@ -256,12 +259,18 @@ function postThumb($obj) {
 }
 
 function Postviews($archive) {
+	static $viewsColumnChecked = false;
 	$db = Typecho_Db::get();
 	$cid = $archive->cid;
-	if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))) {
-		$db->query('ALTER TABLE `'.$db->getPrefix().'contents` ADD `views` INT(10) DEFAULT 0;');
+	if (!$viewsColumnChecked) {
+		$row = $db->fetchRow($db->select()->from('table.contents'));
+		if (!array_key_exists('views', $row)) {
+			$db->query('ALTER TABLE `'.$db->getPrefix().'contents` ADD `views` INT(10) DEFAULT 0');
+		}
+		$viewsColumnChecked = true;
 	}
-	$exist = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid))['views'];
+	$exist = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
+	$exist = isset($exist['views']) ? $exist['views'] : 0;
 	if ($archive->is('single')) {
 		$cookie = Typecho_Cookie::get('contents_views');
 		$cookie = $cookie ? explode(',', $cookie) : array();
@@ -281,7 +290,8 @@ function Postviews($archive) {
 function Breadcrumbs($archive) {
 	$options = Helper::options();
 	if (!empty($options->Breadcrumbs) && in_array('Pageshow', $options->Breadcrumbs)) {
-		echo '<div class="breadcrumbs">'.PHP_EOL .'<a href="'.$options->siteUrl.'">首页</a> &raquo; '.$archive->title.PHP_EOL .'</div>'.PHP_EOL;
+		$title = htmlspecialchars($archive->title, ENT_QUOTES, 'UTF-8');
+		echo '<div class="breadcrumbs">'.PHP_EOL .'<a href="'.$options->siteUrl.'">首页</a> &raquo; '.$title.PHP_EOL .'</div>'.PHP_EOL;
 	}
 }
 
@@ -294,7 +304,7 @@ function createCatalog($obj) {
 		global $catalog;
 		global $catalog_count;
 		$catalog_count ++;
-		$catalog[] = array('text' => trim(strip_tags($obj[3])), 'depth' => $obj[1], 'count' => $catalog_count);
+		$catalog[] = array('text' => htmlspecialchars(trim(strip_tags($obj[3])), ENT_QUOTES, 'UTF-8'), 'depth' => $obj[1], 'count' => $catalog_count);
 		return '<h'.$obj[1].$obj[2].'><a class="cl-offset" name="cl-'.$catalog_count.'"></a>'.$obj[3].'</h'.$obj[1].'>';
 	}, $obj);
 	return $obj.PHP_EOL .getCatalog();
@@ -326,7 +336,7 @@ function getCatalog() {
 					$index .= '</li>'.PHP_EOL;
 				}
 			}
-			$index .= '<li><a href="#cl-'.$catalog_item['count'].'" onclick="Catalogswith()">'.$catalog_item['text'].'</a>';
+			$index .= '<li><a href="#cl-'.$catalog_item['count'].'" onclick="Catalogswith()">'.htmlspecialchars($catalog_item['text'], ENT_QUOTES, 'UTF-8').'</a>';
 			$prev_depth = $catalog_item['depth'];
 		}
 		for ($i=0; $i<=$to_depth; $i++) {
@@ -341,10 +351,12 @@ function CommentAuthor($obj, $autoLink = NULL, $noFollow = NULL) {
 	$options = Helper::options();
 	$autoLink = $autoLink ? $autoLink : $options->commentsShowUrl;
 	$noFollow = $noFollow ? $noFollow : $options->commentsUrlNofollow;
+	$author = htmlspecialchars($obj->author, ENT_QUOTES, 'UTF-8');
+	$url = htmlspecialchars($obj->url, ENT_QUOTES, 'UTF-8');
 	if ($obj->url && $autoLink) {
-		echo '<a href="'.$obj->url.'"'.($noFollow ? ' rel="external nofollow"' : NULL).(strstr($obj->url, $options->index) == $obj->url ? NULL : ' target="_blank"').'>'.$obj->author.'</a>';
+		echo '<a href="'.$url.'"'.($noFollow ? ' rel="external nofollow"' : NULL).(strstr($obj->url, $options->index) == $obj->url ? NULL : ' target="_blank"').'>'.$author.'</a>';
 	} else {
-		echo $obj->author;
+		echo $author;
 	}
 }
 
@@ -356,7 +368,7 @@ function CommentAt($coid){
 	if ($prow && $parent != '0') {
 		$arow = $db->fetchRow($db->select('author')->from('table.comments')
 			->where('coid = ? AND status = ?', $parent, 'approved'));
-		echo '<b class="comment-at">@'.$arow['author'].'</b>';
+		echo '<b class="comment-at">@'.htmlspecialchars($arow['author'], ENT_QUOTES, 'UTF-8').'</b>';
 	}
 }
 
@@ -437,7 +449,8 @@ function Whisper($sidebar = NULL) {
 	}
 	if ($page) {
 		$page = $page[0];
-		$title = $sidebar ? '<h3 class="widget-title">'.$page['title'].'</h3>' : '<h2 class="post-title"><a href="'.$page['permalink'].'">'.$page['title'].'<span class="more">···</span></a></h2>';
+		$pageTitle = htmlspecialchars($page['title'], ENT_QUOTES, 'UTF-8');
+		$title = $sidebar ? '<h3 class="widget-title">'.$pageTitle.'</h3>' : '<h2 class="post-title"><a href="'.$page['permalink'].'">'.$pageTitle.'<span class="more">···</span></a></h2>';
 		$comment = $db->fetchAll($db->select()->from('table.comments')
 			->where('cid = ? AND status = ? AND parent = ?', $page['cid'], 'approved', '0')
 			->order('coid', Typecho_Db::SORT_DESC)
@@ -483,7 +496,12 @@ function Links($sorts = NULL, $icon = 0) {
 	if ($list) {
 		$list = explode(PHP_EOL, $list);
 		foreach ($list as $val) {
-			list($name, $url, $description, $logo, $sort) = explode(',', $val);
+			$parts = array_pad(explode(',', $val), 5, '');
+			$name = htmlspecialchars($parts[0], ENT_QUOTES, 'UTF-8');
+			$url = htmlspecialchars($parts[1], ENT_QUOTES, 'UTF-8');
+			$description = htmlspecialchars($parts[2], ENT_QUOTES, 'UTF-8');
+			$logo = htmlspecialchars($parts[3], ENT_QUOTES, 'UTF-8');
+			$sort = htmlspecialchars($parts[4], ENT_QUOTES, 'UTF-8');
 			if ($sorts) {
 				$arr = explode(',', $sorts);
 				if ($sort && in_array($sort, $arr)) {

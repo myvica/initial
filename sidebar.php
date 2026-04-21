@@ -42,7 +42,7 @@
 <?php $this->widget('Initial_Widget_Comments_Recent', in_array('IgnoreAuthor', $this->options->sidebarBlock) ? 'ignoreAuthor=1' : '')->to($comments); ?>
 <?php if($comments->have()): ?>
 <?php while($comments->next()): ?>
-<li><a <?php echo (FindContent($comments->cid)['hidden'] && $this->options->PjaxOption) || (FindContent($comments->cid)['status'] != 'publish' && FindContent($comments->cid)['template'] != 'page-whisper.php' && $this->authorId !== $this->user->uid && !$this->user->pass('editor', true)) ? '' : 'href="'.$comments->permalink.'" ' ?>title="来自: <?php echo (FindContent($comments->cid)['status'] != 'publish' && FindContent($comments->cid)['template'] != 'page-whisper.php' && $this->authorId !== $this->user->uid && !$this->user->pass('editor', true)) ? '此内容被作者隐藏' : $comments->title ?>"><?php $comments->author(false); ?></a>: <?php $comments->excerpt(35, '...'); ?></li>
+<li><a <?php echo (FindContent($comments->cid)['hidden'] && $this->options->PjaxOption) || (FindContent($comments->cid)['status'] != 'publish' && FindContent($comments->cid)['template'] != 'page-whisper.php' && $this->authorId !== $this->user->uid && !$this->user->pass('editor', true)) ? '' : 'href="'.$comments->permalink.'" ' ?>title="来自: <?php echo (FindContent($comments->cid)['status'] != 'publish' && FindContent($comments->cid)['template'] != 'page-whisper.php' && $this->authorId !== $this->user->uid && !$this->user->pass('editor', true)) ? '此内容被作者隐藏' : htmlspecialchars($comments->title, ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($comments->author(false), ENT_QUOTES, 'UTF-8'); ?></a>: <?php echo htmlspecialchars($comments->excerpt(35, '...'), ENT_QUOTES, 'UTF-8'); ?></li>
 <?php endwhile; ?>
 <?php else: ?>
 <li>暂无回复</li>
@@ -57,7 +57,7 @@
 <?php $this->widget('Widget_Metas_Tag_Cloud', 'ignoreZeroCount=1&limit=20')->to($tags); ?>
 <?php if($tags->have()): ?>
 <?php while($tags->next()): ?>
-<li><a style="background-color:rgb(<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>,<?php echo(rand(0,255)); ?>);color: #FFF;border-radius: 0.2rem;padding: 0 .3em;" href="<?php $tags->permalink();?>" title="<?php $tags->count(); ?> 篇文章"><?php $tags->name(); ?></a></li>
+<li><a style="background-color:hsl(<?php echo rand(0,360); ?>,<?php echo rand(60,90); ?>%,<?php echo rand(30,45); ?>%);color: #FFF;border-radius: 0.2rem;padding: 0 .3em;" href="<?php $tags->permalink();?>" title="<?php $tags->count(); ?> 篇文章"><?php $tags->name(); ?></a></li>
 <?php endwhile; ?>
 <?php else: ?>
 <li>暂无标签</li>
